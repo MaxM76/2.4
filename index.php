@@ -2,14 +2,10 @@
 
 require_once __DIR__ . '/functions.php';
 
-if (!isGuest()) {
-    header('Location: index.php');
-}
 $errors = [];
 
-if (!empty($_GET['login']) && !empty($_GET['password'])) {
-//    echo $_GET['login'] . ' ' . $_GET['password'] . '<br>';
-    if (login($_GET['login'], $_GET['password'])) {
+if (!empty($_POST['login']) && !empty($_POST['password'])) {
+    if (login($_POST['login'], $_POST['password'])) {
         header('Location: admin.php');
         die;
     }
@@ -17,8 +13,8 @@ if (!empty($_GET['login']) && !empty($_GET['password'])) {
         $errors[] = 'Неверный логин или пароль';
     }
 }
-elseif (!empty($_GET['username'])) {
-    logAsGuest($_GET['username']);
+elseif (!empty($_POST['username'])) {
+    logAsGuest($_POST['username']);
     header('Location: list.php');
     die;
 }
@@ -45,7 +41,7 @@ else {
       <?php endforeach; ?>
     </ul>
     <p>Чтобы начать работу с тестами надо представиться или зайти как администратор</p>
-    <form method="GET">
+    <form method="POST">
       <label>Введите ваше имя: </label>
       <input type="text" name="username" value="" placeholder="Ваше имя">
       <button type="submit">Продолжить</button>
@@ -53,7 +49,7 @@ else {
 
     <br>
     <hr>
-    <form method="GET">
+    <form method="POST">
         <label>Введите логин: </label>
         <input type="text" name="login" value="" placeholder="Логин">
         <label>Введите пароль: </label>
